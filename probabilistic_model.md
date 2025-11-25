@@ -110,26 +110,13 @@ Maximizing the likelihood is equivalent to maximizing the **log-likelihood** $\e
 The log-likelihood, after removing the constant $\sum_{i=1}^{N} \log \binom{n_i}{y_i}$ and substituting $p_i$, is:
 
 $$
-\ell(\theta)
-= \sum_{i=1}^{N}
-\left[
-y_i \log \left(\sigma(\alpha + \beta x_i)\right)
-+
-(n_i - y_i) \log \left(1 - \sigma(\alpha + \beta x_i)\right)
-\right]
-+ \text{constant}.
+\ell(\theta) = \sum_{i=1}^{N} \left[ y_i \log \left(\sigma(\alpha + \beta x_i)\right) + (n_i - y_i) \log \left(1 - \sigma(\alpha + \beta x_i)\right) \right] + \text{constant}.
 $$
 
-Using the logistic regression identity $\log(1 - \sigma(z)) = -\log(1 + e^z)$, this is equivalent to:
+Using the logistic regression identity $\log(1 - \sigma(z)) = -\log(1 + e^z)$, this is equivalent to the **simplified form**:
 
 $$
-\ell(\theta)
-= \sum_{i=1}^{N}
-\left[
-y_i (\alpha + \beta x_i)
-- n_i \log \left(1 + e^{\alpha + \beta x_i}\right)
-\right]
-+ \text{constant}.
+\ell(\theta) = \sum_{i=1}^{N} \left[ y_i (\alpha + \beta x_i) - n_i \log \left(1 + e^{\alpha + \beta x_i}\right) \right] + \text{constant}.
 $$
 
 This expression is precisely the **log-likelihood** used in **logistic regression** with binomial observations.
