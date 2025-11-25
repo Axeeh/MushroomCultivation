@@ -47,7 +47,7 @@ $$
 P(y \mid \theta)
 = \prod_{i=1}^{N}
 \binom{n_i}{y_i}
-\cdot p_i^{\,y_i} \cdot (1 - p_i)^{\,n_i - y_i},
+p_i^{\,y_i} (1 - p_i)^{\,n_i - y_i},
 \quad
 \text{where} \quad
 p_i = \sigma(\alpha + \beta x_i).
@@ -55,7 +55,7 @@ $$
 
 ### Prior on Parameters
 
-In a Bayesian setting (not strictly MLE), we place **Gaussian priors** on the parameters $\alpha$ and $\beta$:
+In a Bayesian setting, we place **Gaussian priors** on the parameters $\alpha$ and $\beta$:
 
 $$
 \alpha \sim \mathcal{N}(0, 4),
@@ -77,10 +77,10 @@ Putting the likelihood and prior together defines the **full generative model**:
 $$
 P(y, \theta)
 = P(\theta)
-\cdot \prod_{i=1}^{N}
+\prod_{i=1}^{N}
 \binom{n_i}{y_i}
-\; [\sigma(\alpha + \beta x_i)]^{\,y_i}
-\; [1 - \sigma(\alpha + \beta x_i)]^{\,n_i - y_i}.
+[\sigma(\alpha + \beta x_i)]^{\,y_i}
+[1 - \sigma(\alpha + \beta x_i)]^{\,n_i - y_i}.
 $$
 
 ---
@@ -98,30 +98,36 @@ $$
 = P(y \mid \theta)
 = \prod_{i=1}^{N}
 \binom{n_i}{y_i}
-\; p_i^{\,y_i} \; (1 - p_i)^{\,n_i - y_i},
+p_i^{\,y_i} (1 - p_i)^{\,n_i - y_i},
 \quad
 p_i = \sigma(\alpha + \beta x_i).
 $$
 
 ### Log-Likelihood
 
-Maximizing the likelihood $\mathcal{L}(\theta)$ is equivalent to maximizing the **log-likelihood** $\ell(\theta)$, which is derived by taking the natural logarithm of $\mathcal{L}(\theta)$:
+Maximizing the likelihood is equivalent to maximizing the **log-likelihood** $\ell(\theta)$.
 
-$$
-\ell(\theta)
-= \log \mathcal{L}(\theta)
-= \sum_{i=1}^{N} \left[ \log \binom{n_i}{y_i} + y_i \cdot \log p_i + (n_i - y_i) \cdot \log(1 - p_i) \right]
-$$
-
-Since $\log \binom{n_i}{y_i}$ is constant with respect to the parameters $\theta = (\alpha, \beta)$, we focus on maximizing the variable terms. Substituting the definition of $p_i = \sigma(\alpha + \beta x_i)$ yields the core component:
+The log-likelihood, after removing the constant $\sum_{i=1}^{N} \log \binom{n_i}{y_i}$ and substituting $p_i$, is:
 
 $$
 \ell(\theta)
 = \sum_{i=1}^{N}
 \left[
-y_i \cdot \log \sigma(\alpha + \beta x_i)
+y_i \log \left(\sigma(\alpha + \beta x_i)\right)
 +
-(n_i - y_i) \cdot \log\bigl(1 - \sigma(\alpha + \beta x_i)\bigr)
+(n_i - y_i) \log \left(1 - \sigma(\alpha + \beta x_i)\right)
+\right]
++ \text{constant}.
+$$
+
+Using the logistic regression identity $\log(1 - \sigma(z)) = -\log(1 + e^z)$, this is equivalent to:
+
+$$
+\ell(\theta)
+= \sum_{i=1}^{N}
+\left[
+y_i (\alpha + \beta x_i)
+- n_i \log \left(1 + e^{\alpha + \beta x_i}\right)
 \right]
 + \text{constant}.
 $$
