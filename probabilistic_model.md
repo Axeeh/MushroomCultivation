@@ -1,57 +1,116 @@
-# 1.1 Probabilistic model
+# Probabilistic Model & Maximum Likelihood Estimation
 
-We observe data from\
-- (N = 4) temperature levels\
-- For each level (i):\
-- storage temperature (x_i)\
-- number of mushrooms (n_i)\
-- number spoiled (y_i)
+## 1.1 Probabilistic Model
 
-## Latent spoilage probability
+We observe data for \(N = 4\) temperature levels. For each level \(i\), we have:
 
-Each mushroom in group (i) spoils independently with probability
+- Storage temperature \(x_i\) (in °C)  
+- Number of mushrooms \(n_i\)  
+- Number of spoiled mushrooms \(y_i\)
 
-\[ p_i = `\sigma`{=tex}(`\alpha `{=tex}+ `\beta `{=tex}x_i),
-`\qquad `{=tex} `\sigma`{=tex}(z) = `\frac{1}{1 + e^{-z}}`{=tex}. \]
+### Latent Spoilage Probability
 
-Thus (p_i) is not observed, but determined by parameters
-(`\theta `{=tex}= (`\alpha`{=tex}, `\beta`{=tex})).
+Each mushroom in group \(i\) spoils independently with probability:
 
-## Likelihood for each group
-
-\[ P(y_i `\mid `{=tex}`\theta`{=tex}) = `\binom{n_i}{y_i}`{=tex}
-p_i\^{y_i} (1 - p_i)\^{n_i - y_i}. \]
-
-## Independence across groups
-
-\[ P(y `\mid `{=tex}`\theta`{=tex}) = `\prod`{=tex}\_{i=1}\^{N}
-`\binom{n_i}{y_i}`{=tex} p_i\^{,y_i} (1-p_i)\^{,n_i - y_i},
-`\quad`{=tex} p_i = `\sigma`{=tex}(`\alpha `{=tex}+ `\beta `{=tex}x_i).
+\[
+p_i = \sigma(\alpha + \beta x_i),
+\qquad
+\sigma(z) = \frac{1}{1 + e^{-z}}.
 \]
 
-## Prior on parameters
+Here, \(\theta = (\alpha, \beta)\) are parameters.
 
-\[ `\alpha `{=tex}`\sim `{=tex}`\mathcal{N}`{=tex}(0,4), `\qquad`{=tex}
-`\beta `{=tex}`\sim `{=tex}`\mathcal{N}`{=tex}(0,1). \]
+### Likelihood for Each Group
 
-## Full probabilistic model
+Given \(\theta\), \(y_i\) (the number of spoiled mushrooms in group \(i\)) follows:
 
-\[ P(y, `\theta`{=tex}) = P(`\theta`{=tex}) `\prod`{=tex}\_{i=1}\^{N}
-`\binom{n_i}{y_i}`{=tex} \[`\sigma`{=tex}(`\alpha `{=tex}+
-`\beta `{=tex}x_i)\]\^{y_i} \[1 - `\sigma`{=tex}(`\alpha `{=tex}+
-`\beta `{=tex}x_i)\]\^{n_i - y_i}. \]
+\[
+y_i \mid \theta \sim \text{Binomial}(n_i, p_i)
+\]
 
-# 1.2 Maximum Likelihood Estimation
+so that
 
-## Likelihood
+\[
+P(y_i \mid \theta)
+= \binom{n_i}{y_i}\, p_i^{\,y_i} \, (1 - p_i)^{\,n_i - y_i}.
+\]
 
-\[ `\mathcal{L}`{=tex}(`\theta`{=tex}) = `\prod`{=tex}\_{i=1}\^{N}
-`\binom{n_i}{y_i}`{=tex} p_i\^{y_i} (1-p_i)\^{n_i - y_i}. \]
+### Independence Across Groups
 
-## Log-likelihood
+Assuming independence across groups (given \(\theta\)), the full-data likelihood is:
 
-\[ `\ell`{=tex}(`\theta`{=tex}) = `\sum`{=tex}\_{i=1}\^{N} \[ y_i
-`\log `{=tex}`\sigma`{=tex}(`\alpha`{=tex}+`\beta `{=tex}x_i) + (n_i -
-y_i)`\log`{=tex}(1 -
-`\sigma`{=tex}(`\alpha`{=tex}+`\beta `{=tex}x_i))\] +
-`\text{const}`{=tex}. \]
+\[
+P(y \mid \theta)
+= \prod_{i=1}^{N}
+\binom{n_i}{y_i}
+\cdot p_i^{\,y_i} \cdot (1 - p_i)^{\,n_i - y_i},
+\quad
+p_i = \sigma(\alpha + \beta x_i).
+\]
+
+### Prior on Parameters
+
+We place Gaussian priors on \(\alpha\) and \(\beta\):
+
+\[
+\alpha \sim \mathcal{N}(0, 4),
+\qquad
+\beta \sim \mathcal{N}(0, 1).
+\]
+
+Assuming independence:
+
+\[
+P(\theta)
+= \mathcal{N}(\alpha; 0, 4)\;\mathcal{N}(\beta; 0, 1).
+\]
+
+### Full Generative Model
+
+Putting everything together:
+
+\[
+P(y, \theta)
+= P(\theta)
+\cdot \prod_{i=1}^{N}
+\binom{n_i}{y_i}
+\; [\sigma(\alpha + \beta x_i)]^{\,y_i}
+\; [1 - \sigma(\alpha + \beta x_i)]^{\,n_i - y_i}.
+\]
+
+---
+
+## 1.2 Maximum Likelihood Estimation
+
+### Likelihood Function
+
+Ignoring the prior, the likelihood function is:
+
+\[
+\mathcal{L}(\theta)
+= \prod_{i=1}^{N}
+\binom{n_i}{y_i}
+\; p_i^{\,y_i} \; (1 - p_i)^{\,n_i - y_i},
+\quad
+p_i = \sigma(\alpha + \beta x_i).
+\]
+
+### Log-Likelihood
+
+Taking logs gives the log-likelihood:
+
+\[
+\ell(\theta)
+= \sum_{i=1}^{N}
+\left[
+y_i \cdot \log \sigma(\alpha + \beta x_i)
++
+(n_i - y_i) \cdot \log\bigl(1 - \sigma(\alpha + \beta x_i)\bigr)
+\right]
++ \text{constant}.
+\]
+
+This is equivalent to the log-likelihood in logistic regression with binomial observations.
+
+---
+
