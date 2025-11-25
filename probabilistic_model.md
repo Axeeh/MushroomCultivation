@@ -105,22 +105,15 @@ $$
 
 ### Log-Likelihood
 
-Maximizing the likelihood is equivalent to maximizing the **log-likelihood** $\ell(\theta)$, as the logarithm is a monotonically increasing function.
-
-The log-likelihood is derived by taking the natural logarithm of $\mathcal{L}(\theta)$:
+Maximizing the likelihood $\mathcal{L}(\theta)$ is equivalent to maximizing the **log-likelihood** $\ell(\theta)$, which is derived by taking the natural logarithm of $\mathcal{L}(\theta)$:
 
 $$
 \ell(\theta)
 = \log \mathcal{L}(\theta)
-= \sum_{i=1}^{N}
-\left[
-\log \binom{n_i}{y_i}
-+ y_i \cdot \log p_i
-+ (n_i - y_i) \cdot \log(1 - p_i)
-\right]
+= \sum_{i=1}^{N} \left[ \log \binom{n_i}{y_i} + y_i \cdot \log p_i + (n_i - y_i) \cdot \log(1 - p_i) \right]
 $$
 
-Since $\log \binom{n_i}{y_i}$ is a constant with respect to $\theta$, the term to be maximized is:
+Since $\log \binom{n_i}{y_i}$ is constant with respect to the parameters $\theta = (\alpha, \beta)$, we focus on maximizing the variable terms. Substituting the definition of $p_i = \sigma(\alpha + \beta x_i)$ yields the core component:
 
 $$
 \ell(\theta)
