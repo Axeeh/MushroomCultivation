@@ -21,3 +21,13 @@ def neg_log_lik(theta, x, y, n):
 
 def neg_lik(theta, x, y, n):
     return -lik(theta, x, y, n)
+
+def log_prior(theta, sigma_prior=10):
+    alpha, beta = theta
+    return - (alpha**2 + beta**2) / (2 * sigma_prior**2)
+
+def log_posterior(theta, x, y, n):
+    return log_lik(theta, x,y,n) + log_prior(theta)
+
+def neg_log_posterior(theta,x,y,n):
+    return -log_posterior(theta, x,y,n)
