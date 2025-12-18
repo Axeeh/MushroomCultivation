@@ -12,6 +12,13 @@ We observe data for $N = 4$ temperature levels. For each level $i$, we have:
 * **Number of mushrooms** $n_i$
 * **Number of spoiled mushrooms** $y_i$
 
+| Level ID | Storage Temperature $x$ (°C) | Total Mushrooms $n$ | Spoiled Mushrooms $y$ |
+|----------|-------------------------------|----------------------|-----------------------|
+| 1        | 2                             | 30                   | 2                     |
+| 2        | 8                             | 25                   | 4                     |
+| 3        | 15                            | 20                   | 5                     |
+| 4        | 25                            | 30                   | 20                    |
+
 ### Latent Spoilage Probability
 
 Each mushroom in group $i$ spoils independently with probability $p_i$. This probability is modeled using the **sigmoid (or logistic) function**:
@@ -82,41 +89,3 @@ P(y, \theta)
 [\sigma(\alpha + \beta x_i)]^{\,y_i}
 [1 - \sigma(\alpha + \beta x_i)]^{\,n_i - y_i}.
 $$
-
----
-
-## 1.2 Maximum Likelihood Estimation
-
-The **Maximum Likelihood Estimate ($\hat{\theta}_{\text{MLE}}$)** is the parameter vector $\theta$ that maximizes the likelihood function $\mathcal{L}(\theta)$.
-
-### Likelihood Function
-
-Ignoring the prior $P(\theta)$, the **likelihood function** $\mathcal{L}(\theta)$ is defined as:
-
-$$
-\mathcal{L}(\theta)
-= P(y \mid \theta)
-= \prod_{i=1}^{N}
-\binom{n_i}{y_i}
-p_i^{\,y_i} (1 - p_i)^{\,n_i - y_i},
-\quad
-p_i = \sigma(\alpha + \beta x_i).
-$$
-
-### Log-Likelihood
-
-Maximizing the likelihood is equivalent to maximizing the **log-likelihood** $\ell(\theta)$.
-
-The log-likelihood, after removing the constant $\sum_{i=1}^{N} \log \binom{n_i}{y_i}$ and substituting $p_i$, is:
-
-$$
-\ell(\theta) = \sum_{i=1}^{N} \left[ y_i \log \left(\sigma(\alpha + \beta x_i)\right) + (n_i - y_i) \log \left(1 - \sigma(\alpha + \beta x_i)\right) \right] + \text{constant}.
-$$
-
-Using the logistic regression identity $\log(1 - \sigma(z)) = -\log(1 + e^z)$, this is equivalent to the **simplified form**:
-
-$$
-\ell(\theta) = \sum_{i=1}^{N} \left[ y_i (\alpha + \beta x_i) - n_i \log \left(1 + e^{\alpha + \beta x_i}\right) \right] + \text{constant}.
-$$
-
-This expression is precisely the **log-likelihood** used in **logistic regression** with binomial observations.
