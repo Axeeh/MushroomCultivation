@@ -1,6 +1,6 @@
 # Probabilistic Model & Maximum Likelihood Estimation
 
-This document outlines a **probabilistic model** to estimate the spoilage probability of mushrooms based on storage temperature, followed by a description of the **Maximum Likelihood Estimation (MLE)** approach for parameter fitting. The model uses a **logistic regression** structure with **binomial observations**.
+This document proposes a probabilistic model that gives an estimate of the probability of spoilage of mushrooms at any storage temperature and explains the MLE approach for fitting the model parameters. The logistic regression structure with binomial observations is considered in the development of the model.
 
 ---
 
