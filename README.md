@@ -48,6 +48,6 @@ The full model combines a binomial likelihood with Gaussian priors on parameters
 ```text
 .
 ├── functions.py              # Likelihood, prior, posterior utilities
-├── notebook.ipynb / .pdf     # Full analysis, plots, and results
-├── probabilistic_model.pdf   # Mathematical model derivation
+├── notebook.ipynb            # Full analysis, plots, and results
+├── probabilistic_model.md    # Mathematical model derivation
 ├── README.md                 # Project documentation
